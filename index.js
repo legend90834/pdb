@@ -28,3 +28,19 @@ app.post("/data", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server started"));
+// Table তৈরি করার route (একবার run করার জন্য)
+app.get("/create-table", async (req, res) => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS notes (
+        id SERIAL PRIMARY KEY,
+        text TEXT NOT NULL
+      )
+    `);
+    res.send("Table 'notes' তৈরি হয়ে গেছে ✅");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error: " + err.message);
+  }
+});
+
